@@ -150,7 +150,7 @@ function calcular() {
   const numeroNomeCompleto = numerologiaNome.completo;
   const numerosSeparados = numerologiaNome.separados;
   const numeroData = calcularNumeroData(data);
-  const numeroDestino = reduzirNumero(numeroNome + numeroData);
+  const numeroDestino = reduzirNumero(numeroNomeCompleto + numeroData);
   const numeroCabala = calcularCabalaNome(nome);
 
   // Novos cálculos (vogais e consoantes)
@@ -168,7 +168,7 @@ function calcular() {
   const resultadoHTML = `
     <div class="resultado-box">
       <h3>Numerologia Tradicional</h3>
-      <p><strong>Nome Pesquisado:(${nome})</p>
+      <p><strong>Nome Pesquisado:(${nome})</strong></p>
       <p><strong>Nome completo (${numerologiaNome.completo}):</strong> ${interpretarNumerologia(numerologiaNome.completo)}</p>
       <h4>Nomes separados:</h4>
       ${nomesSeparadosHTML}
