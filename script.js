@@ -146,7 +146,7 @@ function calcular() {
   }
 
   // Cálculos
-  const numerologiaNome = calcularNumerologiaNome(nome);
+  const numerologiaNome = calcularNumerologiaNome(nome); // Agora retorna {completo, separados}
   const numeroNomeCompleto = numerologiaNome.completo;
   const numerosSeparados = numerologiaNome.separados;
   const numeroData = calcularNumeroData(data);
@@ -158,12 +158,20 @@ function calcular() {
   const consoantesNumerologia = somarConsoantes(nome, valorLetrasNumerologia);
   const vogaisCabala = somarVogais(nome, valorLetrasCabala);
   const consoantesCabala = somarConsoantes(nome, valorLetrasCabala);
+
+ // Formatando os nomes separados para exibição
+  const nomesSeparadosHTML = numerologiaNome.separados.map(item => `
+    <p><strong>${item.nome}:</strong> ${item.valor} (valor bruto: ${item.valorBruto})</p>
+  `).join('');
   
   // Exibir resultados (adicione isso ao HTML de saída)
   const resultadoHTML = `
     <div class="resultado-box">
       <h3>Numerologia Tradicional</h3>
       <p><strong>Nome Pesquisado:(${nome})</p>
+      <p><strong>Nome completo (${numerologiaNome.completo}):</strong> ${interpretarNumerologia(numerologiaNome.completo)}</p>
+      <h4>Nomes separados:</h4>
+      ${nomesSeparadosHTML}
       <p><strong>Data Nascimento(${numeroData}):</strong> ${interpretarNumerologia(numeroData)}</p>
       <p><strong>Nome (${numeroNome}):</strong> ${interpretarNumerologia(numeroNome)}</p>
       <p><strong>Vogais do Nome (${vogaisNumerologia}):</strong> ${interpretarNumerologia(vogaisNumerologia)}</p>
@@ -180,6 +188,4 @@ function calcular() {
   `;
 
   document.getElementById('resultado').innerHTML = resultadoHTML;
-  console.log("Nome completo:", numeroNomeCompleto);
-  console.log("Nomes separados:", numerosSeparados);
 }
