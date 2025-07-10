@@ -7,10 +7,10 @@ const valorLetrasNumerologia = {
 
 // Tabela adaptada para Cabala (valores aproximados)
 const valorLetrasCabala = {
-  'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 5,
-  'I': 1, 'J': 1, 'K': 2, 'L': 3, 'M': 4, 'N': 5, 'O': 7, 'P': 8,
-  'Q': 1, 'R': 2, 'S': 3, 'T': 4, 'U': 6, 'V': 6, 'W': 6, 'X': 5,
-  'Y': 1, 'Z': 7
+  'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8,
+  'I': 9, 'J': 600, 'K': 10, 'L': 20, 'M': 30, 'N': 40, 'O': 50,
+  'P': 60, 'Q': 70, 'R': 80, 'S': 90, 'T': 100, 'U': 200, 'V': 700,
+  'W': 900, 'X': 300, 'Y': 400, 'Z': 500
 };
 
 // ===== FUNÇÕES BÁSICAS =====
@@ -61,8 +61,18 @@ function calcularNumeroData(data) {
 // ===== INTERPRETAÇÕES =====
 function interpretarNumerologia(numero) {
   const significados = {
-    1: "Liderança e independência",
-    2: "Harmonia e cooperação",
+    1: 'Liderança, independência e criatividade.',
+    2: 'Harmonia, cooperação e sensibilidade.',
+    3: 'Expressão, comunicação e otimismo.',
+    4: 'Estabilidade, organização e praticidade.',
+    5: 'Liberdade, aventura e mudança.',
+    6: 'Responsabilidade, amor e equilíbrio.',
+    7: 'Espiritualidade, intuição e análise.',
+    8: 'Poder, ambição e realização material.',
+    9: 'Humanitarismo, compaixão e sabedoria.',
+    11: 'Mestre 11: Intuição elevada e inspiração.',
+    22: 'Mestre 22: Construtor e visionário.',
+    33: 'Mestre 33: Amor incondicional e serviço à humanidade.'
     // ... (complete com outros números)
   };
   return significados[numero] || "Significado espiritual único";
