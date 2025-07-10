@@ -18,7 +18,7 @@ function calcularValorLetra(letra, tabela) {
 }
 
 function reduzirNumero(numero, preservarMestres = true) {
-  const numerosMestres = [11, 22, 33];
+  const numerosMestres = [11, 22, 33, 44, 55, 66, 77, 88, 99];
   if (preservarMestres && numerosMestres.includes(numero)) return numero;
   
   let num = numero;
@@ -61,14 +61,34 @@ function somarConsoantes(nome, tabela) {
 
 // ===== CÁLCULOS PRINCIPAIS =====
 function calcularNumerologiaNome(nome) {
-  const letras = nome.replace(/[^A-Za-z]/g, '');
-  let soma = 0;
+  // Remove caracteres não-alfabéticos e divide por espaços
+  const nomesSeparados = nome.replace(/[^A-Za-z ]/g, '').split(' ').filter(n => n !== '');
   
-  for (let letra of letras) {
-    soma += calcularValorLetra(letra, valorLetrasNumerologia);
+  // Calcula o NOME COMPLETO (como antes)
+  const nomeCompleto = nomesSeparados.join('');
+  let somaCompleta = 0;
+  for (let letra of nomeCompleto) {
+    somaCompleta += calcularValorLetra(letra, valorLetrasNumerologia);
   }
-  
-  return reduzirNumero(soma);
+
+  // Calcula CADA NOME SEPARADAMENTE
+  const calculosSeparados = nomesSeparados.map(nome => {
+    let soma = 0;
+    for (let letra of nome) {
+      soma += calcularValorLetra(letra, valorLetrasNumerologia);
+    }
+    return {
+      nome: nome,
+      valor: reduzirNumero(soma),
+      valorBruto: soma // Opcional: inclui o número sem redução
+    };
+  });
+
+  // Retorna um objeto com todos os resultados
+  return {
+    completo: reduzirNumero(somaCompleta),
+    separados: calculosSeparados
+  };
 }
 
 function calcularCabalaNome(nome) {
@@ -126,7 +146,9 @@ function calcular() {
   }
 
   // Cálculos
-  const numeroNome = calcularNumerologiaNome(nome);
+  const numerologiaNome = calcularNumerologiaNome(nome);
+  const numeroNomeCompleto = numerologiaNome.completo;
+  const numerosSeparados = numerologiaNome.separados;
   const numeroData = calcularNumeroData(data);
   const numeroDestino = reduzirNumero(numeroNome + numeroData);
   const numeroCabala = calcularCabalaNome(nome);
@@ -141,21 +163,23 @@ function calcular() {
   const resultadoHTML = `
     <div class="resultado-box">
       <h3>Numerologia Tradicional</h3>
-      <p><strong>(${nome})</p>
+      <p><strong>Nome Pesquisado:(${nome})</p>
+      <p><strong>Data Nascimento(${numeroData}):</strong> ${interpretarNumerologia(numeroData)}</p>
       <p><strong>Nome (${numeroNome}):</strong> ${interpretarNumerologia(numeroNome)}</p>
-      <p><strong>Vogais (${vogaisNumerologia}):</strong> ${interpretarNumerologia(vogaisNumerologia)}</p>
-      <p><strong>Consoantes (${consoantesNumerologia}):</strong> ${interpretarNumerologia(consoantesNumerologia)}</p>
-      <p><strong>Data (${numeroData}):</strong> ${interpretarNumerologia(numeroData)}</p>
-      <p><strong>Destino (${numeroDestino}):</strong> ${interpretarNumerologia(numeroDestino)}</p>
+      <p><strong>Vogais do Nome (${vogaisNumerologia}):</strong> ${interpretarNumerologia(vogaisNumerologia)}</p>
+      <p><strong>Consoantes do Nome(${consoantesNumerologia}):</strong> ${interpretarNumerologia(consoantesNumerologia)}</p>
+      <p><strong>Numero de Destino (${numeroDestino}):</strong> ${interpretarNumerologia(numeroDestino)}</p>
     </div>
     <div class="resultado-box">
-      <h3>Cabala</h3>
+      <h3>Analise na Cabala Mistica</h3>
       <p><strong>Valor do Nome:</strong> ${numeroCabala}</p>
-      <p><strong>Vogais:</strong> ${vogaisCabala}</p>
-      <p><strong>Consoantes:</strong> ${consoantesCabala}</p>
+      <p><strong>Vogais do Nome:</strong> ${vogaisCabala}</p>
+      <p><strong>Consoantes do Nome:</strong> ${consoantesCabala}</p>
       <p><strong>Significado:</strong> ${interpretarCabala(numeroCabala)}</p>
     </div>
   `;
 
   document.getElementById('resultado').innerHTML = resultadoHTML;
+  console.log("Nome completo:", numeroNomeCompleto);
+  console.log("Nomes separados:", numerosSeparados);
 }
