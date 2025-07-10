@@ -2,18 +2,23 @@
 <html>
 <head>
   <title>Numerologia Gratuita</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-    input, button { padding: 10px; margin: 5px 0; width: 100%; }
-    #resultado { margin-top: 20px; background: #f0f0f0; padding: 15px; border-radius: 5px; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Numerologia do Nome e Data de Nascimento</h1>
-  <input type="text" id="nome" placeholder="Digite seu nome completo">
-  <input type="date" id="data">
-  <button onclick="calcularNumerologia()">Calcular</button>
-  <div id="resultado"></div>
+  <div class="container">
+    <h1>Numerologia do Nome</h1>
+    <div class="input-group">
+      <label for="nome">Nome Completo</label>
+      <input type="text" id="nome" placeholder="Ex: Ana Silva">
+    </div>
+    <div class="input-group">
+      <label for="data">Data de Nascimento</label>
+      <input type="date" id="data">
+    </div>
+    <button onclick="calcularNumerologia()">Calcular</button>
+    <div id="resultado"></div>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
