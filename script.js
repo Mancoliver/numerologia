@@ -1,47 +1,90 @@
-function calcularNumerologia() {
-  // Pega os dados do usuário (só existem na memória do navegador)
-  const nome = document.getElementById("nome").value;
-  const dataNascimento = document.getElementById("dataNascimento").value;
+// =============================================
+// FUNÇÕES DE CÁLCULO NUMEROLÓGICO
+// =============================================
 
-  // Processa a numerologia (exemplo simplificado)
-  const numeroDestino = calcularNumeroDestino(nome, dataNascimento);
-  const significado = interpretarNumero(numeroDestino);
-
-  // Exibe o resultado (os dados NÃO são salvos em lugar nenhum)
-  document.getElementById("resultado").innerHTML = `
-    <h2>Seu Número de Destino: ${numeroDestino}</h2>
-    <p>${significado}</p>
-  `;
+// 1. Calcula o valor de uma única letra (A=1, B=2, ..., I=9, J=1, ..., Z=8)
+function calcularValorLetra(letra) {
+  const letraUpper = letra.toUpperCase();
+  const valorLetras = {
+    'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'I': 9,
+    'J': 1, 'K': 2, 'L': 3, 'M': 4, 'N': 5, 'O': 6, 'P': 7, 'Q': 8, 'R': 9,
+    'S': 1, 'T': 2, 'U': 3, 'V': 4, 'W': 5, 'X': 6, 'Y': 7, 'Z': 8
+  };
+  return valorLetras[letraUpper] || 0; // Retorna 0 se não for letra
 }
 
-// Função de exemplo para cálculo (adapte conforme sua metodologia)
-function calcularNumeroDestino(nome, data) {
+// 2. Reduz um número para 1 dígito (exceto números mestres 11, 22, 33)
+function reduzirNumero(numero) {
+  if ([11, 22, 33].includes(numero)) return numero; // Mantém mestres
+  while (numero > 9) {
+    numero = String(numero).split('').reduce((sum, digit) => sum + Number(digit), 0);
+  }
+  return numero;
+}
+
+// 3. Calcula o número do nome (soma letras e reduz)
+function calcularNumeroNome(nomeCompleto) {
+  const letrasValidas = nomeCompleto.replace(/[^A-Za-z]/g, ''); // Remove espaços e caracteres especiais
   let soma = 0;
-  
-  // Soma das letras do nome (A=1, B=2..., I=9)
-  for (let letra of nome.toUpperCase()) {
-    if (letra >= "A" && letra <= "I") soma += letra.charCodeAt(0) - 64;
-    else if (letra >= "J" && letra <= "R") soma += (letra.charCodeAt(0) - 64) % 9 || 9;
-    else if (letra >= "S" && letra <= "Z") soma += (letra.charCodeAt(0) - 64) % 9 || 9;
+  for (const letra of letrasValidas) {
+    soma += calcularValorLetra(letra);
+  }
+  return reduzirNumero(soma);
+}
+
+// 4. Calcula o número da data de nascimento (dd/mm/aaaa)
+function calcularNumeroData(data) {
+  const [dia, mes, ano] = data.split('-').map(Number); // Formato: YYYY-MM-DD (input type="date")
+  const soma = dia + mes + ano;
+  return reduzirNumero(soma);
+}
+
+// =============================================
+// FUNÇÃO PRINCIPAL (executada ao clicar no botão)
+// =============================================
+function calcularNumerologia() {
+  // 1. Pega os valores do formulário
+  const nome = document.getElementById('nome').value;
+  const data = document.getElementById('data').value;
+
+  // 2. Validações básicas
+  if (!nome || !data) {
+    alert('Por favor, preencha nome e data de nascimento!');
+    return;
   }
 
-  // Soma da data de nascimento (dd/mm/aaaa)
-  const [dia, mes, ano] = data.split("-").map(Number);
-  soma += dia + mes + ano;
+  // 3. Calcula os números
+  const numeroNome = calcularNumeroNome(nome);
+  const numeroData = calcularNumeroData(data);
+  const numeroDestino = reduzirNumero(numeroNome + numeroData);
 
-  // Reduz para um único dígito (ex.: 23 → 2+3 = 5)
-  while (soma > 9) soma = String(soma).split("").reduce((acc, d) => acc + Number(d), 0);
-  
-  return soma;
+  // 4. Exibe os resultados
+  const resultadoHTML = `
+    <h3>Resultado:</h3>
+    <p><strong>Nome:</strong> ${numeroNome} (${getSignificadoNumero(numeroNome)})</p>
+    <p><strong>Data de Nascimento:</strong> ${numeroData} (${getSignificadoNumero(numeroData)})</p>
+    <p><strong>Número de Destino:</strong> ${numeroDestino} (${getSignificadoNumero(numeroDestino)})</p>
+  `;
+  document.getElementById('resultado').innerHTML = resultadoHTML;
 }
 
-// Exemplo de interpretação (substitua pelo seu conteúdo)
-function interpretarNumero(numero) {
+// =============================================
+// SIGNIFICADOS DOS NÚMEROS (personalize aqui!)
+// =============================================
+function getSignificadoNumero(numero) {
   const significados = {
-    1: "Liderança e independência.",
-    2: "Harmonia e cooperação.",
-    3: "Criatividade e expressão.",
-    // ... complete com os outros números
+    1: 'Liderança, independência e criatividade.',
+    2: 'Harmonia, cooperação e sensibilidade.',
+    3: 'Expressão, comunicação e otimismo.',
+    4: 'Estabilidade, organização e praticidade.',
+    5: 'Liberdade, aventura e mudança.',
+    6: 'Responsabilidade, amor e equilíbrio.',
+    7: 'Espiritualidade, intuição e análise.',
+    8: 'Poder, ambição e realização material.',
+    9: 'Humanitarismo, compaixão e sabedoria.',
+    11: 'Mestre 11: Intuição elevada e inspiração.',
+    22: 'Mestre 22: Construtor e visionário.',
+    33: 'Mestre 33: Amor incondicional e serviço à humanidade.'
   };
-  return significados[numero] || "Número não interpretado.";
+  return significados[numero] || 'Significado não definido.';
 }
