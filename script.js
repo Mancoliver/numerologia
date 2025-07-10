@@ -123,6 +123,8 @@ function interpretarNumerologia(numero) {
     11: 'Mestre 11: Intuição elevada e inspiração.',
     22: 'Mestre 22: Construtor e visionário.',
     33: 'Mestre 33: Amor incondicional e serviço à humanidade.'
+    44: 'Mestre 44: Transformação prática e disciplina.',
+    55: 'Mestre 55: Liberdade radical e mudanças profundas.' 
     // ... (complete com outros números)
   };
   return significados[numero] || "Significado espiritual único";
