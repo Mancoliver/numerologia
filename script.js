@@ -141,6 +141,7 @@ function calcular() {
   const resultadoHTML = `
     <div class="resultado-box">
       <h3>Numerologia Tradicional</h3>
+      <p><strong>(${nome})</p>
       <p><strong>Nome (${numeroNome}):</strong> ${interpretarNumerologia(numeroNome)}</p>
       <p><strong>Vogais (${vogaisNumerologia}):</strong> ${interpretarNumerologia(vogaisNumerologia)}</p>
       <p><strong>Consoantes (${consoantesNumerologia}):</strong> ${interpretarNumerologia(consoantesNumerologia)}</p>
