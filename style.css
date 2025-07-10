@@ -1,0 +1,144 @@
+/* ============================================= */
+/* RESET BÁSICO & FONTES */
+/* ============================================= */
+:root {
+  --cor-primaria: #6D4C9E;       /* Roxo espiritual */
+  --cor-secundaria: #F8F1FF;     /* Fundo suave */
+  --cor-texto: #333333;          /* Texto escuro */
+  --cor-destaque: #FF9F1C;       /* Laranja energético */
+  --cor-fundo-input: #FFFFFF;    /* Branco puro */
+  --sombra: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.6;
+  color: var(--cor-texto);
+  background-color: var(--cor-secundaria);
+  padding: 20px;
+}
+
+/* ============================================= */
+/* CONTAINER PRINCIPAL */
+/* ============================================= */
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--sombra);
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  color: var(--cor-primaria);
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2.2rem;
+}
+
+/* ============================================= */
+/* FORMULÁRIO */
+/* ============================================= */
+.input-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--cor-primaria);
+}
+
+input[type="text"],
+input[type="date"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus {
+  border-color: var(--cor-primaria);
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--cor-primaria), #8E6BBF);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* ============================================= */
+/* RESULTADO */
+/* ============================================= */
+#resultado {
+  margin-top: 30px;
+  padding: 25px;
+  background: var(--cor-secundaria);
+  border-radius: 10px;
+  border-left: 4px solid var(--cor-destaque);
+}
+
+#resultado h3 {
+  color: var(--cor-primaria);
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+}
+
+#resultado p {
+  margin-bottom: 10px;
+}
+
+#resultado strong {
+  color: var(--cor-destaque);
+}
+
+/* ============================================= */
+/* RESPONSIVIDADE (MOBILE) */
+/* ============================================= */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+}
+
+/* ============================================= */
+/* ANIMAÇÕES (OPCIONAL) */
+/* ============================================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#resultado {
+  animation: fadeIn 0.5s ease-out;
+}
