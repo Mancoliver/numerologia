@@ -106,7 +106,7 @@ function calcular() {
     <div class="resultado-box">
       <h3>Numerologia Tradicional</h3>
       <p><strong>Nome (${numeroNome}):</strong> ${interpretarNumerologia(numeroNome)}</p>
-      <p><strong>Data (${numeroData}):</strong> Ciclos de vida</p>
+      <p><strong>Data (${numeroData}):</strong> ${interpretarNumerologia(numeroData)}</p>
       <p><strong>Destino (${numeroDestino}):</strong> ${interpretarNumerologia(numeroDestino)}</p>
     </div>
     <div class="resultado-box">
