@@ -3,17 +3,17 @@
 <head>
   <title>Numerologia Gratuita</title>
   <style>
-    body { font-family: Arial; text-align: center; margin-top: 50px; }
-    input, button { padding: 10px; margin: 10px; }
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+    input, button { padding: 10px; margin: 5px 0; width: 100%; }
+    #resultado { margin-top: 20px; background: #f0f0f0; padding: 15px; border-radius: 5px; }
   </style>
 </head>
 <body>
-  <h1>Análise Numerológica</h1>
-  <input type="text" id="nome" placeholder="Seu nome completo"> <br>
-  <input type="date" id="dataNascimento"> <br>
+  <h1>Numerologia do Nome e Data de Nascimento</h1>
+  <input type="text" id="nome" placeholder="Digite seu nome completo">
+  <input type="date" id="data">
   <button onclick="calcularNumerologia()">Calcular</button>
   <div id="resultado"></div>
-
   <script src="script.js"></script>
 </body>
 </html>
