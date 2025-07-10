@@ -27,6 +27,37 @@ function reduzirNumero(numero, preservarMestres = true) {
   }
   return num;
 }
+// ===== FUNÇÕES PARA SOMAR VOGAIS E CONSOANTES =====
+function isVogal(letra) {
+  const vogais = ['A', 'E', 'I', 'O', 'U'];
+  return vogais.includes(letra.toUpperCase());
+}
+
+function somarVogais(nome, tabela) {
+  const letras = nome.replace(/[^A-Za-z]/g, '');
+  let soma = 0;
+  
+  for (let letra of letras) {
+    if (isVogal(letra)) {
+      soma += calcularValorLetra(letra, tabela);
+    }
+  }
+  
+  return tabela === valorLetrasNumerologia ? reduzirNumero(soma) : soma;
+}
+
+function somarConsoantes(nome, tabela) {
+  const letras = nome.replace(/[^A-Za-z]/g, '');
+  let soma = 0;
+  
+  for (let letra of letras) {
+    if (!isVogal(letra)) {
+      soma += calcularValorLetra(letra, tabela);
+    }
+  }
+  
+  return tabela === valorLetrasNumerologia ? reduzirNumero(soma) : soma;
+}
 
 // ===== CÁLCULOS PRINCIPAIS =====
 function calcularNumerologiaNome(nome) {
@@ -100,17 +131,27 @@ function calcular() {
   const numeroDestino = reduzirNumero(numeroNome + numeroData);
   const numeroCabala = calcularCabalaNome(nome);
 
-  // Exibir resultados
+  // Novos cálculos (vogais e consoantes)
+  const vogaisNumerologia = somarVogais(nome, valorLetrasNumerologia);
+  const consoantesNumerologia = somarConsoantes(nome, valorLetrasNumerologia);
+  const vogaisCabala = somarVogais(nome, valorLetrasCabala);
+  const consoantesCabala = somarConsoantes(nome, valorLetrasCabala);
+  
+  // Exibir resultados (adicione isso ao HTML de saída)
   const resultadoHTML = `
     <div class="resultado-box">
       <h3>Numerologia Tradicional</h3>
       <p><strong>Nome (${numeroNome}):</strong> ${interpretarNumerologia(numeroNome)}</p>
+      <p><strong>Vogais (${vogaisNumerologia}):</strong> ${interpretarNumerologia(vogaisNumerologia)}</p>
+      <p><strong>Consoantes (${consoantesNumerologia}):</strong> ${interpretarNumerologia(consoantesNumerologia)}</p>
       <p><strong>Data (${numeroData}):</strong> ${interpretarNumerologia(numeroData)}</p>
       <p><strong>Destino (${numeroDestino}):</strong> ${interpretarNumerologia(numeroDestino)}</p>
     </div>
     <div class="resultado-box">
       <h3>Cabala</h3>
       <p><strong>Valor do Nome:</strong> ${numeroCabala}</p>
+      <p><strong>Vogais:</strong> ${vogaisCabala}</p>
+      <p><strong>Consoantes:</strong> ${consoantesCabala}</p>
       <p><strong>Significado:</strong> ${interpretarCabala(numeroCabala)}</p>
     </div>
   `;
