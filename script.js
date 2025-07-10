@@ -94,7 +94,7 @@ function getSignificadoNumero(numero) {
     9: 'Humanitarismo, compaixão e sabedoria.',
     11: 'Mestre 11: Intuição elevada e inspiração.',
     22: 'Mestre 22: Construtor e visionário.',
-    33: 'Mestre 33: Amor incondicional e serviço à humanidade.'
+    33: 'Mestre 33: Amor incondicional e serviço à humanidade.',
   };
     // ... (complete com os outros números)
   };
