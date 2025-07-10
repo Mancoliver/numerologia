@@ -12,75 +12,98 @@ const valorLetrasCabala = {
   'W': 900, 'X': 300, 'Y': 400, 'Z': 500
 };
 
-// ===== FUNÇÕES =====
-function getValorLetra(letra, tabela) {
+// ===== FUNÇÕES BÁSICAS =====
+function calcularValorLetra(letra, tabela) {
   return tabela[letra.toUpperCase()] || 0;
 }
 
-function reduzirNumero(numero) {
+function reduzirNumero(numero, preservarMestres = true) {
   const numerosMestres = [11, 22, 33];
-  if (numerosMestres.includes(numero)) return numero;
+  if (preservarMestres && numerosMestres.includes(numero)) return numero;
   
-  while (numero > 9) {
-    numero = String(numero).split('').reduce((acc, d) => acc + parseInt(d), 0);
+  let num = numero;
+  while (num > 9 && !numerosMestres.includes(num)) {
+    num = String(num).split('').reduce((acc, d) => acc + parseInt(d), 0);
   }
-  return numero;
+  return num;
 }
 
-function calcularNumerologia(nome) {
+// ===== CÁLCULOS PRINCIPAIS =====
+function calcularNumerologiaNome(nome) {
   const letras = nome.replace(/[^A-Za-z]/g, '');
   let soma = 0;
+  
   for (let letra of letras) {
-    soma += getValorLetra(letra, valorLetrasNumerologia);
+    soma += calcularValorLetra(letra, valorLetrasNumerologia);
   }
+  
   return reduzirNumero(soma);
 }
 
-function calcularCabala(nome) {
+function calcularCabalaNome(nome) {
   const letras = nome.replace(/[^A-Za-z]/g, '');
   let soma = 0;
+  
   for (let letra of letras) {
-    soma += getValorLetra(letra, valorLetrasCabala);
+    soma += calcularValorLetra(letra, valorLetrasCabala);
   }
+  
   return soma; // Não reduzir na Cabala!
 }
 
-function calcularData(data) {
+function calcularNumeroData(data) {
   const numeros = data.replace(/-/g, '').split('').map(Number);
-  return reduzirNumero(numeros.reduce((acc, num) => acc + num, 0));
+  const soma = numeros.reduce((acc, num) => acc + num, 0);
+  return reduzirNumero(soma);
 }
 
-// ===== EXECUÇÃO PRINCIPAL =====
-document.addEventListener('DOMContentLoaded', function() {
-  const btnCalcular = document.getElementById('btnCalcular');
+// ===== INTERPRETAÇÕES =====
+function interpretarNumerologia(numero) {
+  const significados = {
+    1: "Liderança e independência",
+    2: "Harmonia e cooperação",
+    // ... (complete com outros números)
+  };
+  return significados[numero] || "Significado espiritual único";
+}
+
+function interpretarCabala(numero) {
+  if (numero === 7) return "Perfeição divina";
+  if (numero >= 40 && numero <= 49) return "Transformação espiritual";
+  // ... (adicione mais interpretações)
+  return `Número cabalístico: ${numero}`;
+}
+
+// ===== FUNÇÃO PRINCIPAL =====
+function calcular() {
+  const nome = document.getElementById('nome').value.trim();
+  const data = document.getElementById('data').value;
   
-  if (btnCalcular) {
-    btnCalcular.addEventListener('click', function() {
-      const nome = document.getElementById('nome').value.trim();
-      const data = document.getElementById('data').value;
-      
-      if (!nome || !data) {
-        alert("Preencha nome e data!");
-        return;
-      }
-
-      const numeroNome = calcularNumerologia(nome);
-      const numeroData = calcularData(data);
-      const numeroDestino = reduzirNumero(numeroNome + numeroData);
-      const numeroCabala = calcularCabala(nome);
-
-      document.getElementById('resultado').innerHTML = `
-        <div class="resultado-box">
-          <h3>Numerologia</h3>
-          <p><strong>Nome:</strong> ${numeroNome}</p>
-          <p><strong>Data:</strong> ${numeroData}</p>
-          <p><strong>Destino:</strong> ${numeroDestino}</p>
-        </div>
-        <div class="resultado-box">
-          <h3>Cabala</h3>
-          <p><strong>Valor:</strong> ${numeroCabala}</p>
-        </div>
-      `;
-    });
+  if (!nome || !data) {
+    alert("Por favor, preencha todos os campos!");
+    return;
   }
-});
+
+  // Cálculos
+  const numeroNome = calcularNumerologiaNome(nome);
+  const numeroData = calcularNumeroData(data);
+  const numeroDestino = reduzirNumero(numeroNome + numeroData);
+  const numeroCabala = calcularCabalaNome(nome);
+
+  // Exibir resultados
+  const resultadoHTML = `
+    <div class="resultado-box">
+      <h3>Numerologia Tradicional</h3>
+      <p><strong>Nome (${numeroNome}):</strong> ${interpretarNumerologia(numeroNome)}</p>
+      <p><strong>Data (${numeroData}):</strong> Ciclos de vida</p>
+      <p><strong>Destino (${numeroDestino}):</strong> ${interpretarNumerologia(numeroDestino)}</p>
+    </div>
+    <div class="resultado-box">
+      <h3>Cabala</h3>
+      <p><strong>Valor do Nome:</strong> ${numeroCabala}</p>
+      <p><strong>Significado:</strong> ${interpretarCabala(numeroCabala)}</p>
+    </div>
+  `;
+
+  document.getElementById('resultado').innerHTML = resultadoHTML;
+}
