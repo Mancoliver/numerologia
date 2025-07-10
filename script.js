@@ -1,75 +1,85 @@
 // =============================================
-// FUNÇÕES DE CÁLCULO NUMEROLÓGICO
+// TABELAS DE VALORES
 // =============================================
+const valorLetrasNumerologia = {
+  'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'I': 9,
+  'J': 1, 'K': 2, 'L': 3, 'M': 4, 'N': 5, 'O': 6, 'P': 7, 'Q': 8, 'R': 9,
+  'S': 1, 'T': 2, 'U': 3, 'V': 4, 'W': 5, 'X': 6, 'Y': 7, 'Z': 8
+};
 
-// 1. Calcula o valor de uma única letra (A=1, B=2, ..., I=9, J=1, ..., Z=8)
-function calcularValorLetra(letra) {
+// Valores da Cabala (Gematria) para letras latinas (adaptação simplificada)
+const valorLetrasCabala = {
+  'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8,
+  'I': 9, 'J': 600, 'K': 10, 'L': 20, 'M': 30, 'N': 40, 'O': 50,
+  'P': 60, 'Q': 70, 'R': 80, 'S': 90, 'T': 100, 'U': 200, 'V': 700,
+  'W': 900, 'X': 300, 'Y': 400, 'Z': 500
+};
+
+// =============================================
+// FUNÇÕES DE CÁLCULO
+// =============================================
+function calcularValorLetra(letra, tabela) {
   const letraUpper = letra.toUpperCase();
-  const valorLetras = {
-    'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'I': 9,
-    'J': 1, 'K': 2, 'L': 3, 'M': 4, 'N': 5, 'O': 6, 'P': 7, 'Q': 8, 'R': 9,
-    'S': 1, 'T': 2, 'U': 3, 'V': 4, 'W': 5, 'X': 6, 'Y': 7, 'Z': 8
-  };
-  return valorLetras[letraUpper] || 0; // Retorna 0 se não for letra
+  return tabela[letraUpper] || 0;
 }
 
-// 2. Reduz um número para 1 dígito (exceto números mestres 11, 22, 33)
-function reduzirNumero(numero) {
-  if ([11, 22, 33].includes(numero)) return numero; // Mantém mestres
-  while (numero > 9) {
+function reduzirNumero(numero, preservarMestres = true) {
+  if (preservarMestres && [11, 22, 33].includes(numero)) return numero;
+  while (numero > 9 && numero !== 11 && numero !== 22 && numero !== 33) {
     numero = String(numero).split('').reduce((sum, digit) => sum + Number(digit), 0);
   }
   return numero;
 }
 
-// 3. Calcula o número do nome (soma letras e reduz)
-function calcularNumeroNome(nomeCompleto) {
-  const letrasValidas = nomeCompleto.replace(/[^A-Za-z]/g, ''); // Remove espaços e caracteres especiais
+function calcularSoma(nome, tabela, reduzir = true) {
+  const letrasValidas = nome.replace(/[^A-Za-z]/g, '');
   let soma = 0;
   for (const letra of letrasValidas) {
-    soma += calcularValorLetra(letra);
+    soma += calcularValorLetra(letra, tabela);
   }
-  return reduzirNumero(soma);
-}
-
-// 4. Calcula o número da data de nascimento (dd/mm/aaaa)
-function calcularNumeroData(data) {
-  const [dia, mes, ano] = data.split('-').map(Number); // Formato: YYYY-MM-DD (input type="date")
-  const soma = dia + mes + ano;
-  return reduzirNumero(soma);
+  return reduzir ? reduzirNumero(soma) : soma; // Cabala pode não reduzir
 }
 
 // =============================================
-// FUNÇÃO PRINCIPAL (executada ao clicar no botão)
+// FUNÇÃO PRINCIPAL
 // =============================================
 function calcularNumerologia() {
-  // 1. Pega os valores do formulário
   const nome = document.getElementById('nome').value;
   const data = document.getElementById('data').value;
 
-  // 2. Validações básicas
   if (!nome || !data) {
-    alert('Por favor, preencha nome e data de nascimento!');
+    alert('Preencha nome e data!');
     return;
   }
 
-  // 3. Calcula os números
-  const numeroNome = calcularNumeroNome(nome);
-  const numeroData = calcularNumeroData(data);
+  // Numerologia Tradicional
+  const numeroNome = calcularSoma(nome, valorLetrasNumerologia);
+  const numeroData = calcularSoma(data.replace(/-/g, ''), valorLetrasNumerologia); // Remove hífens
   const numeroDestino = reduzirNumero(numeroNome + numeroData);
 
-  // 4. Exibe os resultados
+  // Cabala (Gematria)
+  const numeroCabala = calcularSoma(nome, valorLetrasCabala, false); // Não reduzir!
+  const significadoCabala = interpretarCabala(numeroCabala);
+
+  // Exibir resultados
   const resultadoHTML = `
-    <h3>Resultado:</h3>
-    <p><strong>Nome:</strong> ${numeroNome} (${getSignificadoNumero(numeroNome)})</p>
-    <p><strong>Data de Nascimento:</strong> ${numeroData} (${getSignificadoNumero(numeroData)})</p>
-    <p><strong>Número de Destino:</strong> ${numeroDestino} (${getSignificadoNumero(numeroDestino)})</p>
+    <div class="resultado-box">
+      <h3>Numerologia Tradicional</h3>
+      <p><strong>Nome:</strong> ${numeroNome} (${getSignificadoNumero(numeroNome)})</p>
+      <p><strong>Data de Nascimento:</strong> ${numeroData}</p>
+      <p><strong>Número de Destino:</strong> ${numeroDestino} (${getSignificadoNumero(numeroDestino)})</p>
+    </div>
+    <div class="resultado-box">
+      <h3>Cabala (Gematria)</h3>
+      <p><strong>Valor do Nome:</strong> ${numeroCabala}</p>
+      <p><strong>Significado:</strong> ${significadoCabala}</p>
+    </div>
   `;
   document.getElementById('resultado').innerHTML = resultadoHTML;
 }
 
 // =============================================
-// SIGNIFICADOS DOS NÚMEROS (personalize aqui!)
+// INTERPRETAÇÕES (PERSONALIZE!)
 // =============================================
 function getSignificadoNumero(numero) {
   const significados = {
@@ -86,5 +96,16 @@ function getSignificadoNumero(numero) {
     22: 'Mestre 22: Construtor e visionário.',
     33: 'Mestre 33: Amor incondicional e serviço à humanidade.'
   };
-  return significados[numero] || 'Significado não definido.';
+    // ... (complete com os outros números)
+  };
+  return significados[numero] || 'Sem significado definido.';
+}
+
+function interpretarCabala(numero) {
+  // Exemplos simplificados (pesquise mais sobre Gematria!)
+  if (numero >= 1 && numero <= 9) return 'Significado base similar à numerologia.';
+  if (numero === 10) return 'Perfeição divina.';
+  if (numero === 22) return 'O Mestre Construtor na Cabala.';
+  // ... adicione mais interpretações conforme pesquisa
+  return `Consulte um especialista em Cabala para o número ${numero}.`;
 }
