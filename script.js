@@ -60,8 +60,18 @@ function calcularNumeroData(data) {
 // ===== INTERPRETAÇÕES =====
 function interpretarNumerologia(numero) {
   const significados = {
-    1: "Liderança e independência",
-    2: "Harmonia e cooperação",
+    1: 'Liderança, independência e criatividade.',
+    2: 'Harmonia, cooperação e sensibilidade.',
+    3: 'Expressão, comunicação e otimismo.',
+    4: 'Estabilidade, organização e praticidade.',
+    5: 'Liberdade, aventura e mudança.',
+    6: 'Responsabilidade, amor e equilíbrio.',
+    7: 'Espiritualidade, intuição e análise.',
+    8: 'Poder, ambição e realização material.',
+    9: 'Humanitarismo, compaixão e sabedoria.',
+    11: 'Mestre 11: Intuição elevada e inspiração.',
+    22: 'Mestre 22: Construtor e visionário.',
+    33: 'Mestre 33: Amor incondicional e serviço à humanidade.'
     // ... (complete com outros números)
   };
   return significados[numero] || "Significado espiritual único";
@@ -95,7 +105,7 @@ function calcular() {
     <div class="resultado-box">
       <h3>Numerologia Tradicional</h3>
       <p><strong>Nome (${numeroNome}):</strong> ${interpretarNumerologia(numeroNome)}</p>
-      <p><strong>Data (${numeroData}):</strong> Ciclos de vida</p>
+      <p><strong>Data (${numeroData}):</strong> ${interpretarNumerologia(numeroData)}</p>
       <p><strong>Destino (${numeroDestino}):</strong> ${interpretarNumerologia(numeroDestino)}</p>
     </div>
     <div class="resultado-box">
