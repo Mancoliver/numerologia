@@ -96,7 +96,7 @@ function calcular2() {
     }
   }
 
-  document.getElementById('resultado').innerHTML = `
+  document.getElementById('resultado2').innerHTML = `
     <div class="planos-nome">
       <h3>Planos do Nome Completo</h3>
       ${planosHTML}
