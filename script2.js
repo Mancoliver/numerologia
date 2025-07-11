@@ -37,6 +37,18 @@ function agruparPorPlanoNome(nome) {
 
   return planos;
 }
+
+function calcularNumerologiaNome(nome) {
+  // Remove caracteres não-alfabéticos e divide por espaços
+  const nomesSeparados = nome.replace(/[^A-Za-z ]/g, '').split(' ').filter(n => n !== '');
+  
+  // Calcula o NOME COMPLETO (como antes)
+  const nomeCompleto = nomesSeparados.join('');
+  let somaCompleta = 0;
+  for (let letra of nomeCompleto) {
+    somaCompleta += calcularValorLetra(letra, valorLetrasNumerologia);
+  }
+
 // função principal chamada
 function calcular2() {
   const nome = document.getElementById('nome').value.trim();
