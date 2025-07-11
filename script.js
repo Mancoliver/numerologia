@@ -153,24 +153,7 @@ function contarNumeros(numeros) {
   return contagem;
 }
 
-function agruparPorPlano(ocorrencias) {
-  const resultado = {};
-  // Inicializa todos os planos
-  for (const plano in planosNumerologia) {
-    resultado[plano] = { numeros: {}, total: 0 };
-  }
-// Classifica cada número no plano correspondente
-  for (const num in ocorrencias) {
-    for (const [plano, numerosDoPlano] of Object.entries(planosNumerologia)) {
-      if (numerosDoPlano.includes(parseInt(num))) {
-        resultado[plano].numeros[num] = ocorrencias[num];
-        resultado[plano].total += ocorrencias[num];
-        break;
-      }
-    }
-  }
-  return resultado;
-}
+
 // ===== FUNÇÃO PRINCIPAL =====
 function calcular() {
   const nome = document.getElementById('nome').value.trim();
@@ -205,17 +188,6 @@ function calcular() {
     <p><strong>${item.nome}:</strong> ${item.valor} (valor bruto: ${item.valorBruto})</p>
   `).join('');
 
-  // Contagem por planos
-  let planosHTML = '';
-  for (const [plano, dados] of Object.entries(planos)) {
-    if (dados.total > 0) {
-      const detalhes = Object.entries(dados.numeros).map(([num, qtd]) => `${qtd}(${num})`).join(' + ');
-      planosHTML += `
-        <p><strong>${plano.toUpperCase()}:</strong> ${detalhes} | Total: ${dados.total}</p>
-      `;
-    }
-  }
-
   // HTML final único
   const resultadoHTML = `
     <div class="resultado-box">
@@ -230,8 +202,6 @@ function calcular() {
       <p><strong>Consoantes do Nome (${consoantesNumerologia}):</strong> ${interpretarNumerologia(consoantesNumerologia)}</p>
       <p><strong>Número de Destino (${numeroDestino}):</strong> ${interpretarNumerologia(numeroDestino)}</p>
       <br>
-      <h4>Contagem por Plano</h4>
-      ${planosHTML}
     </div>
     <div class="resultado-box">
       <h3>Análise na Cabala Mística</h3>
