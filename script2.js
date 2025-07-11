@@ -6,8 +6,8 @@ const valorLetrasNumerologia2 = {
 };
 
 // ===== FUNÇÕES AUXILIARES =====
-function calcularValorLetra2(letra, tabela) {
-  return tabela[letra.toUpperCase()] || 0;
+function calcularValorLetra2(letra) {
+  return valorLetrasNumerologia2[letra.toUpperCase()] || 0;
 }
 
 function reduzirNumero2(numero) {
@@ -20,34 +20,18 @@ function reduzirNumero2(numero) {
 
 // ===== FUNÇÕES PRINCIPAIS =====
 function calcularNumerologiaNome2(nome) {
-  // Remove caracteres não-alfabéticos e divide por espaços
-  const nomesSeparados = nome.replace(/[^A-Za-z ]/g, '').split(' ').filter(n => n !== '');
+  const letras = nome.replace(/[^A-Za-z]/g, '');
+  let soma = 0;
   
-  // Calcula o NOME COMPLETO
-  const nomeCompleto = nomesSeparados.join('');
-  let somaCompleta = 0;
-  for (let letra of nomeCompleto) {
-    somaCompleta += calcularValorLetra2(letra, valorLetrasNumerologia2);
+  for (let letra of letras) {
+    soma += calcularValorLetra2(letra);
   }
-
-  return {
-    completo: reduzirNumero2(somaCompleta),
-    separados: nomesSeparados.map(nome => {
-      let soma = 0;
-      for (let letra of nome) {
-        soma += calcularValorLetra2(letra, valorLetrasNumerologia2);
-      }
-      return {
-        nome: nome,
-        valor: reduzirNumero2(soma),
-        valorBruto: soma
-      };
-    })
-  };
+  
+  return reduzirNumero2(soma);
 }
 
 function agruparPorPlanoNome(nome) {
-  const numeroNome2 = calcularNumerologiaNome2(nome).completo;
+  const numeroNome2 = calcularNumerologiaNome2(nome);
   
   const planos = {
     fisico: { numeros: [], total: 0, label: "Físico (4,5)" },
@@ -85,6 +69,7 @@ function calcular2() {
   }
 
   const planosNome = agruparPorPlanoNome(nome);
+  const numeroNome2 = calcularNumerologiaNome2(nome);
 
   let planosHTML = '';
   for (const plano of Object.values(planosNome)) {
@@ -97,9 +82,12 @@ function calcular2() {
   }
 
   document.getElementById('resultado2').innerHTML = `
-    <div class="planos-nome">
-      <h3>Planos do Nome Completo</h3>
-      ${planosHTML}
+    <div class="resultado-container">
+      
+      <div class="planos">
+        <h3>Planos do Nome</h3>
+        ${planosHTML}
+      </div>
     </div>
   `;
 }
