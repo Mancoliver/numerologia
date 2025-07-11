@@ -137,6 +137,33 @@ function interpretarCabala(numero) {
   return `Número cabalístico: ${numero}`;
 }
 
+// ===== FUNÇÕES DE CONTAGEM =====
+function contarNumeros(numeros) {
+  const contagem = {};
+  numeros.forEach(num => {
+    contagem[num] = (contagem[num] || 0) + 1;
+  });
+  return contagem;
+}
+
+function agruparPorPlano(ocorrencias) {
+  const resultado = {};
+  // Inicializa todos os planos
+  for (const plano in planosNumerologia) {
+    resultado[plano] = { numeros: {}, total: 0 };
+  }
+// Classifica cada número no plano correspondente
+  for (const num in ocorrencias) {
+    for (const [plano, numerosDoPlano] of Object.entries(planosNumerologia)) {
+      if (numerosDoPlano.includes(parseInt(num))) {
+        resultado[plano].numeros[num] = ocorrencias[num];
+        resultado[plano].total += ocorrencias[num];
+        break;
+      }
+    }
+  }
+  return resultado;
+}
 // ===== FUNÇÃO PRINCIPAL =====
 function calcular() {
   const nome = document.getElementById('nome').value.trim();
@@ -160,6 +187,11 @@ function calcular() {
   const consoantesNumerologia = somarConsoantes(nome, valorLetrasNumerologia);
   const vogaisCabala = somarVogais(nome, valorLetrasCabala);
   const consoantesCabala = somarConsoantes(nome, valorLetrasCabala);
+
+  // Junta todos os números para análise
+  const todosNumeros = [numeroNome, numeroData, numeroDestino];
+  const ocorrencias = contarNumeros(todosNumeros);
+  const planos = agruparPorPlano(ocorrencias);
 
   // Formatação dos resultados
   const nomesSeparadosHTML = numerosSeparados.map(item => `
@@ -186,6 +218,28 @@ function calcular() {
       <p><strong>Consoantes do Nome:</strong> ${consoantesCabala}</p>
       <p><strong>Significado:</strong> ${interpretarCabala(numeroCabala)}</p>
     </div>
+     // Gera HTML
+  let htmlResultado = `
+    <div class="resultado">
+      <h3>Números Calculados</h3>
+      <p><strong>Nome:</strong> ${numeroNome}</p>
+      <p><strong>Data:</strong> ${numeroData}</p>
+      <p><strong>Destino:</strong> ${numeroDestino}</p>
+      
+      <h3>Contagem por Plano</h3>
+  `;
+
+  // Adiciona cada plano ao HTML
+  for (const [plano, dados] of Object.entries(planos)) {
+    if (dados.total > 0) {
+      const detalhes = Object.entries(dados.numeros).map(([num, qtd]) => `${qtd}(${num})`).join(' + ');
+      htmlResultado += `
+        <p><strong>${plano.toUpperCase()}:</strong> ${detalhes} | Total: ${dados.total}</p>
+      `;
+    }
+  }
+
+  htmlResultado += `</div>`;
   `;
 
   document.getElementById('resultado').innerHTML = resultadoHTML;
