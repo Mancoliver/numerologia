@@ -5,6 +5,10 @@ const valorLetrasNumerologia = {
   'S': 1, 'T': 2, 'U': 3, 'V': 4, 'W': 5, 'X': 6, 'Y': 7, 'Z': 8
 };
 
+function calcularValorLetra(letra, tabela) {
+  return tabela[letra.toUpperCase()] || 0;
+}
+
 function agruparPorPlanoNome(nome) {
   // 1. Calcula apenas o número do nome completo
   const numeroNome = calcularNumerologiaNome(nome).completo;
