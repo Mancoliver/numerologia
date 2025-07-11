@@ -222,13 +222,14 @@ function calcular() {
       <h3>Numerologia Tradicional</h3>
       <p><strong>Nome Pesquisado:</strong> ${nome}</p>
       <p><strong>Nome completo (${numeroNomeCompleto}):</strong> ${interpretarNumerologia(numeroNomeCompleto)}</p>
+      <br>
       <h4>Nomes separados:</h4>
       ${nomesSeparadosHTML}
       <p><strong>Data de Nascimento (${numeroData}):</strong> ${interpretarNumerologia(numeroData)}</p>
       <p><strong>Vogais do Nome (${vogaisNumerologia}):</strong> ${interpretarNumerologia(vogaisNumerologia)}</p>
       <p><strong>Consoantes do Nome (${consoantesNumerologia}):</strong> ${interpretarNumerologia(consoantesNumerologia)}</p>
       <p><strong>Número de Destino (${numeroDestino}):</strong> ${interpretarNumerologia(numeroDestino)}</p>
-      
+      <br>
       <h4>Contagem por Plano</h4>
       ${planosHTML}
     </div>
