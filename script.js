@@ -12,6 +12,13 @@ const valorLetrasCabala = {
   'W': 900, 'X': 300, 'Y': 400, 'Z': 500
 };
 
+const planosNumerologia = {
+  fisico: [4, 5],
+  mental: [1, 8],
+  emocional: [2, 3, 6],
+  intuitivo: [7, 9]
+};
+
 // ===== FUNÇÕES BÁSICAS =====
 function calcularValorLetra(letra, tabela) {
   return tabela[letra.toUpperCase()] || 0;
@@ -122,7 +129,7 @@ function interpretarNumerologia(numero) {
     9: 'Humanitarismo, compaixão e sabedoria.',
     11: 'Mestre 11: Intuição elevada e inspiração.',
     22: 'Mestre 22: Construtor e visionário.',
-    33: 'Mestre 33: Amor incondicional e serviço à humanidade.'
+    33: 'Mestre 33: Amor incondicional e serviço à humanidade.',
     44: 'Mestre 44: Transformação prática e disciplina.',
     55: 'Mestre 55: Liberdade radical e mudanças profundas.' 
     // ... (complete com outros números)
@@ -189,16 +196,27 @@ function calcular() {
   const consoantesCabala = somarConsoantes(nome, valorLetrasCabala);
 
   // Junta todos os números para análise
-  const todosNumeros = [numeroNome, numeroData, numeroDestino];
+  const todosNumeros = [numeroNomeCompleto, numeroData, numeroDestino];
   const ocorrencias = contarNumeros(todosNumeros);
   const planos = agruparPorPlano(ocorrencias);
 
-  // Formatação dos resultados
+   // Formatação dos resultados
   const nomesSeparadosHTML = numerosSeparados.map(item => `
     <p><strong>${item.nome}:</strong> ${item.valor} (valor bruto: ${item.valorBruto})</p>
   `).join('');
 
-  // HTML final
+  // Contagem por planos
+  let planosHTML = '';
+  for (const [plano, dados] of Object.entries(planos)) {
+    if (dados.total > 0) {
+      const detalhes = Object.entries(dados.numeros).map(([num, qtd]) => `${qtd}(${num})`).join(' + ');
+      planosHTML += `
+        <p><strong>${plano.toUpperCase()}:</strong> ${detalhes} | Total: ${dados.total}</p>
+      `;
+    }
+  }
+
+  // HTML final único
   const resultadoHTML = `
     <div class="resultado-box">
       <h3>Numerologia Tradicional</h3>
@@ -210,6 +228,9 @@ function calcular() {
       <p><strong>Vogais do Nome (${vogaisNumerologia}):</strong> ${interpretarNumerologia(vogaisNumerologia)}</p>
       <p><strong>Consoantes do Nome (${consoantesNumerologia}):</strong> ${interpretarNumerologia(consoantesNumerologia)}</p>
       <p><strong>Número de Destino (${numeroDestino}):</strong> ${interpretarNumerologia(numeroDestino)}</p>
+      
+      <h4>Contagem por Plano</h4>
+      ${planosHTML}
     </div>
     <div class="resultado-box">
       <h3>Análise na Cabala Mística</h3>
@@ -218,30 +239,7 @@ function calcular() {
       <p><strong>Consoantes do Nome:</strong> ${consoantesCabala}</p>
       <p><strong>Significado:</strong> ${interpretarCabala(numeroCabala)}</p>
     </div>
-     // Gera HTML
-  let htmlResultado = `
-    <div class="resultado">
-      <h3>Números Calculados</h3>
-      <p><strong>Nome:</strong> ${numeroNome}</p>
-      <p><strong>Data:</strong> ${numeroData}</p>
-      <p><strong>Destino:</strong> ${numeroDestino}</p>
-      
-      <h3>Contagem por Plano</h3>
-  `;
-
-  // Adiciona cada plano ao HTML
-  for (const [plano, dados] of Object.entries(planos)) {
-    if (dados.total > 0) {
-      const detalhes = Object.entries(dados.numeros).map(([num, qtd]) => `${qtd}(${num})`).join(' + ');
-      htmlResultado += `
-        <p><strong>${plano.toUpperCase()}:</strong> ${detalhes} | Total: ${dados.total}</p>
-      `;
-    }
-  }
-
-  htmlResultado += `</div>`;
   `;
 
   document.getElementById('resultado').innerHTML = resultadoHTML;
 }
-
