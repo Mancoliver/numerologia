@@ -1,0 +1,60 @@
+function agruparPorPlanoNome(nome) {
+  // 1. Calcula apenas o número do nome completo
+  const numeroNome = calcularNumerologiaNome(nome).completo;
+  
+  // 2. Define os planos
+  const planos = {
+    fisico: { numeros: [], total: 0, label: "Físico (4,5)" },
+    mental: { numeros: [], total: 0, label: "Mental (1,8)" },
+    emocional: { numeros: [], total: 0, label: "Emocional (2,3,6)" },
+    intuitivo: { numeros: [], total: 0, label: "Intuitivo (7,9)" }
+  };
+
+  // 3. Classifica o número do nome
+  if ([4, 5].includes(numeroNome)) {
+    planos.fisico.numeros.push(numeroNome);
+    planos.fisico.total = 1;
+  } 
+  else if ([1, 8].includes(numeroNome)) {
+    planos.mental.numeros.push(numeroNome);
+    planos.mental.total = 1;
+  }
+  else if ([2, 3, 6].includes(numeroNome)) {
+    planos.emocional.numeros.push(numeroNome);
+    planos.emocional.total = 1;
+  }
+  else if ([7, 9].includes(numeroNome)) {
+    planos.intuitivo.numeros.push(numeroNome);
+    planos.intuitivo.total = 1;
+  }
+
+  return planos;
+}
+// função principal chamada
+function calcular2() {
+  const nome = document.getElementById('nome').value.trim();
+  
+  // ... (cálculos existentes)
+
+  // Foca apenas no nome completo
+  const planosNome = agruparPorPlanoNome(nome);
+
+  // Exibição simplificada
+  let planosHTML = '';
+  for (const plano of Object.values(planosNome)) {
+    if (plano.total > 0) {
+      planosHTML += `
+        <p><strong>${plano.label}:</strong> 
+        Número ${plano.numeros[0]} | Total: ${plano.total}</p>
+      `;
+    }
+  }
+
+  // Adiciona ao resultado
+  document.getElementById('resultado').innerHTML += `
+    <div class="planos-nome">
+      <h3>Planos do Nome Completo</h3>
+      ${planosHTML}
+    </div>
+  `;
+}
