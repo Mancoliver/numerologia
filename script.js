@@ -12,13 +12,6 @@ const valorLetrasCabala = {
   'W': 900, 'X': 300, 'Y': 400, 'Z': 500
 };
 
-const planosNumerologia = {
-  fisico: [4, 5],
-  mental: [1, 8],
-  emocional: [2, 3, 6],
-  intuitivo: [7, 9]
-};
-
 // ===== FUNÇÕES BÁSICAS =====
 function calcularValorLetra(letra, tabela) {
   return tabela[letra.toUpperCase()] || 0;
@@ -181,7 +174,7 @@ function calcular() {
   // Junta todos os números para análise
   const todosNumeros = [numeroNomeCompleto, numeroData, numeroDestino];
   const ocorrencias = contarNumeros(todosNumeros);
-  const planos = agruparPorPlano(ocorrencias);
+  
 
    // Formatação dos resultados
   const nomesSeparadosHTML = numerosSeparados.map(item => `
