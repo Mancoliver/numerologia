@@ -106,9 +106,11 @@ function calcular2() {
 
   // 3. Saída final
   document.getElementById('resultado2').innerHTML = `
-    <div class="resultado">
+    <div class="resultado-box">
+      <!-- 
       <h3>Análise do Nome: "${nome}"</h3>
       <p>Número reduzido: <strong>${resultado.numeroReduzido}</strong></p>
+      -->
       ${detalhesLetras}
       ${planosHTML}
     </div>
