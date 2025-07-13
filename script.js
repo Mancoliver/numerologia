@@ -19,12 +19,25 @@ function calcularValorLetra(letra, tabela) {
 
 function reduzirNumero(numero, preservarMestres = true) {
   const numerosMestres = [11, 22, 33, 44, 55, 66, 77, 88, 99];
-  if (preservarMestres && numerosMestres.includes(numero)) return numero;
-  
-  let num = numero;
-  while (num > 9 && !numerosMestres.includes(num)) {
-    num = String(num).split('').reduce((acc, d) => acc + parseInt(d), 0);
+  console.log(`Início: ${numero}, preservarMestres=${preservarMestres}`);
+
+  if (preservarMestres && numerosMestres.includes(numero)) {
+    console.log("Retornando número mestre original:", numero);
+    return numero;
   }
+
+  let num = numero;
+  while (num > 9) {
+    num = String(num).split('').reduce((acc, d) => acc + parseInt(d), 0);
+    console.log("Reduziu para:", num);
+    
+    if (preservarMestres && numerosMestres.includes(num)) {
+      console.log("Encontrou mestre durante redução:", num);
+      return num;
+    }
+  }
+
+  console.log("Retorno final:", num);
   return num;
 }
 // ===== FUNÇÕES PARA SOMAR VOGAIS E CONSOANTES =====
